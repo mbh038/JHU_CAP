@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r get the data}
+## Get the data
+
+library(jsonlite)
+if(!file.exists("data")){dir.create("data")}
+
+# business data
+businessData<- stream_in(file("E:/RSpace/yelp_dataset/business.json"))
+saveRDS(businessData,"./data/businessData.rds")
+rm(businessData)
+
+# checkin datastr(review)
+checkinData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_checkin.json"))
+saveRDS(checkinData,"./data/checkinData.rds")
+rm(checkinData)
+
+# review data
+reviewData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_review.json"))
+saveRDS(reviewData,"./data/reviewData.rds")
+rm(reviewData)
+
+# tip data
+tipData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_tip.json"))
+saveRDS(tipData,"./data/tipData.rds")
+rm(tipData)
+
+# user data
+userData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_user.json"))
+saveRDS(userData,"./data/userData.rds")
+rm(userData)
+```
+```{r lad review data}
+review<- readRDS("../JHU_CAP_data/reviewData.rds")
+```
+
+```{r load business data}
+business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+```
