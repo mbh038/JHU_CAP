@@ -6,31 +6,31 @@
 ## Get the data
 
 library(jsonlite)
-if(!file.exists("data")){dir.create("data")}
+if(!file.exists("E:/Rspace/JHU_CPA_data")){dir.create("E:/Rspace/JHU_CPA_data")}
 
 # business data
 businessData<- stream_in(file("E:/RSpace/yelp_dataset/business.json"))
-saveRDS(businessData,"./data/businessData.rds")
+saveRDS(businessData,"E:/Rspace/JHU_CPA_data/businessData.rds")
 rm(businessData)
 
 # checkin data
 checkinData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_checkin.json"))
-saveRDS(checkinData,"./data/checkinData.rds")
+saveRDS(checkinData,"E:/Rspace/JHU_CPA_data/checkinData.rds")
 rm(checkinData)
 
 # review data
 reviewData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_review.json"))
-saveRDS(reviewData,"./data/reviewData.rds")
+saveRDS(reviewData,"E:/Rspace/JHU_CPA_data/reviewData.rds")
 rm(reviewData)
 
 # tip data
 tipData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_tip.json"))
-saveRDS(tipData,"./data/tipData.rds")
+saveRDS(tipData,"E:/Rspace/JHU_CPA_data/tipData.rds")
 rm(tipData)
 
 # user data
 userData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_user.json"))
-saveRDS(userData,"./data/userData.rds")
+saveRDS(userData,"E:/Rspace/JHU_CPA_data/userData.rds")
 rm(userData)
 
 ## Investigate the review data

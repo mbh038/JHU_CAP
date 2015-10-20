@@ -35,30 +35,34 @@ saveRDS(userData,"./data/userData.rds")
 rm(userData)
 ```
 ```{r load review data}
-review<- readRDS("../JHU_CAP_data/reviewData.rds")
+# review<- readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/reviewData.rds")
+review<- readRDS("E:/Rspace/JHU_CAP_data/reviewData.rds")
 ```
 
 ```{r load business data}
-business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+#business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
 ```
 
 ```{r load user data}
-user<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/userData.rds")
+#user<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/userData.rds")
+user<- readRDS("E:/Rspace/JHU_CAP_data/userData.rds")
 ```
 
 ```{r USA map,cache=TRUE}
 library(raster)
 library(sp)
 # get USA state boundary data
-adm <- getData('GADM', country='USA', level=1)
+adm <- readRDS("USA_adm1.rds")
 # cornwall=adm[adm$NAME_2=="Cornwall",]
 # rm(adm)
 ```
 ```{r USA map}
 library(leaflet)
 m<-leaflet() %>%
-addTiles() %>% # use default OpenStreetMap tile
-setView(lng = -4.7, lat = 50.4, zoom = 10)# %>% # centre on USA
+  addTiles() %>% # use default OpenStreetMap tile
+  #addPolygons(data=adm, weight = 1,fillOpacity = 0.) %>%
+  addMarkers (data=business,lng=business$longitude,lat=business$latitude) %>%
+  setView(lng = -105, lat = 39, zoom = 3)# %>% # centre on USA
 m
-# addPolygons(data=adm, weight = 3, fillColor = "red", popup=NULL,fillOpacity = 0.)
 ```
