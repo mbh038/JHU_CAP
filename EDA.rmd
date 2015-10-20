@@ -34,10 +34,31 @@ userData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_user.jso
 saveRDS(userData,"./data/userData.rds")
 rm(userData)
 ```
-```{r lad review data}
+```{r load review data}
 review<- readRDS("../JHU_CAP_data/reviewData.rds")
 ```
 
 ```{r load business data}
 business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+```
+
+```{r load user data}
+user<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/userData.rds")
+```
+
+```{r USA map,cache=TRUE}
+library(raster)
+library(sp)
+# get USA state boundary data
+adm <- getData('GADM', country='USA', level=1)
+# cornwall=adm[adm$NAME_2=="Cornwall",]
+# rm(adm)
+```
+```{r USA map}
+library(leaflet)
+m<-leaflet() %>%
+addTiles() %>% # use default OpenStreetMap tile
+setView(lng = -4.7, lat = 50.4, zoom = 10)# %>% # centre on USA
+m
+# addPolygons(data=adm, weight = 3, fillColor = "red", popup=NULL,fillOpacity = 0.)
 ```
