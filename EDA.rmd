@@ -40,8 +40,8 @@ review<- readRDS("E:/Rspace/JHU_CAP_data/reviewData.rds")
 ```
 
 ```{r load business data}
-business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
-# business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
+# business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
 ```
 
 ```{r load user data}
@@ -68,7 +68,37 @@ m
 ```
 
 ```{r geocode}
+library(maps)
+library(ggplot2)
 library(ggmap)
+
+
+map("world", ylim=c(10,70), xlim=c(-130,25), col="gray60")
+points(business$longitude, business$latitude,pch=19, col="red")
 cities=c("Edinburgh","Karlsruhe","Pittsburgh","Charlotte","Urbana","Waterloo","Montreal","Madison","Las Vegas","Phoenix")
-latlon<-geocode(cities)
+latlon<-geocode(cities,source="google",messaging=FALSE)
+points(latlon$lon, latlon$lat,pch=19, col="cyan4")
+
+ma<-kmeans(cbind(business$longitude,business$latitude),latlon)
+business$cluster=ma$cluster
+uc<-cbind(cities,ma$centers,ma$size)
 ```
+
+```{r edinburgh}
+EdBus<-subset(business,business$cluster==1)
+nrow(EdBus)
+EdMap<-get_map(location="edinburgh",zoom=14)
+ggmap(EdMap)
+ggmap(EdMap) + geom_point(data = EdBus, aes(x = longitude, y = latitude,size=stars,colour=attributes$Alcohol,alpha=1-2*stars/10))
+```
+
+```{r ed reviews}
+library(lubridate)
+EdRev= subset(review,review$business_id %in% EdBus$business_id)
+boxplot(data=EdRev,stars~month(date))
+EFRev<-subset(EdRev,month(date)==8)
+table(month(EdRev$date))
+a<-sapply(split(EdRev$stars,month(EdRev$date)),mean)
+plot(a)
+```
+
