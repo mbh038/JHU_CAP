@@ -40,8 +40,8 @@ review<- readRDS("E:/Rspace/JHU_CAP_data/reviewData.rds")
 ```
 
 ```{r load business data}
-#business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
-business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
+business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+# business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
 ```
 
 ```{r load user data}
@@ -65,4 +65,10 @@ m<-leaflet() %>%
   addMarkers (data=business,lng=business$longitude,lat=business$latitude) %>%
   setView(lng = -105, lat = 39, zoom = 3)# %>% # centre on USA
 m
+```
+
+```{r geocode}
+library(ggmap)
+cities=c("Edinburgh","Karlsruhe","Pittsburgh","Charlotte","Urbana","Waterloo","Montreal","Madison","Las Vegas","Phoenix")
+latlon<-geocode(cities)
 ```
