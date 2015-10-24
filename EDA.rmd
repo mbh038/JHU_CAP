@@ -39,14 +39,13 @@ rm(userData)
 review<- readRDS("E:/Rspace/JHU_CAP_data/reviewData.rds")
 ```
 
-```{r load business data}
-# business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
-business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
+```{r load business data} business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+# business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
 ```
 
 ```{r load user data}
-#user<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/userData.rds")
-user<- readRDS("E:/Rspace/JHU_CAP_data/userData.rds")
+user<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/userData.rds")
+# user<- readRDS("E:/Rspace/JHU_CAP_data/userData.rds")
 ```
 
 ```{r USA map,cache=TRUE}
