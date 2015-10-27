@@ -34,12 +34,13 @@ userData<- stream_in(file("E:/RSpace/yelp_dataset/yelp_academic_dataset_user.jso
 saveRDS(userData,"./data/userData.rds")
 rm(userData)
 ```
-```{r load review data}
-# review<- readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/reviewData.rds")
-review<- readRDS("E:/Rspace/JHU_CAP_data/reviewData.rds")
+```{r load review data,cache=TRUE}
+review<- readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/reviewData.rds")
+# review<- readRDS("E:/Rspace/JHU_CAP_data/reviewData.rds")
+# review<- readRDS("C:/Users/Mike/Rspace/JHU_CAP_data/reviewData.rds")
 ```
-
-```{r load business data} business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
+```{r load business data}
+business<-readRDS("C:/Users/michael.hunt/Rspace/JHU_CAP_data/businessData.rds")
 # business<- readRDS("E:/Rspace/JHU_CAP_data/businessData.rds")
 ```
 
@@ -68,15 +69,10 @@ m
 
 ```{r geocode}
 library(maps)
-library(ggplot2)
 library(ggmap)
-
-
-map("world", ylim=c(10,70), xlim=c(-130,25), col="gray60")
-points(business$longitude, business$latitude,pch=19, col="red")
 cities=c("Edinburgh","Karlsruhe","Pittsburgh","Charlotte","Urbana","Waterloo","Montreal","Madison","Las Vegas","Phoenix")
 latlon<-geocode(cities,source="google",messaging=FALSE)
-points(latlon$lon, latlon$lat,pch=19, col="cyan4")
+# points(latlon$lon, latlon$lat,pch=19, col="cyan4")
 
 ma<-kmeans(cbind(business$longitude,business$latitude),latlon)
 business$cluster=ma$cluster
@@ -91,13 +87,39 @@ ggmap(EdMap)
 ggmap(EdMap) + geom_point(data = EdBus, aes(x = longitude, y = latitude,size=stars,colour=attributes$Alcohol,alpha=1-2*stars/10))
 ```
 
-```{r ed reviews}
+```{r edreviews}
 library(lubridate)
+library(dplyr)
 EdRev= subset(review,review$business_id %in% EdBus$business_id)
+rm(review)
+EdBus<-subset(business,business$cluster==1)
+nrow(EdBus)
+EdMap<-get_map(location="edinburgh",zoom=14)
+# ggmap(EdMap)
+ggmap(EdMap) + geom_point(data = EdBus, aes(x = longitude, y = latitude,size=stars,colour=attributes$Alcohol,alpha=1-2*stars/10))
 boxplot(data=EdRev,stars~month(date))
 EFRev<-subset(EdRev,month(date)==8)
 table(month(EdRev$date))
 a<-sapply(split(EdRev$stars,month(EdRev$date)),mean)
 plot(a)
+plot(table((month(EdRev$date))))
 ```
 
+```{r all of them}
+HighRevCount<-data.frame(City=character(),
+                         review_count=numeric(),
+                         stringsAsFactors=FALSE)
+
+for (i in 1:length(unique(business$cluster))){
+  CityBus<-subset(business,business$cluster==i)
+  HighRevCount$City[i]=uc[i]
+  HighRevCount$review_count[i]=sum(CityBus$review_count>100)
+  CityRev<-subset(review,review$business_id %in% CityBus$business_id)
+  a<-sapply(split(CityRev$stars,month(CityRev$date)),mean)
+  plot(a)
+  title(main=uc[i])
+  plot(table((month(CityRev$date))))
+  title(main=uc[i])
+  HighRevCount
+}
+```
